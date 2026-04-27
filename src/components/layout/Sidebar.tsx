@@ -31,12 +31,15 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`relative z-20 flex h-screen shrink-0 flex-col border-r border-zinc-100 bg-white py-4 transition-all duration-200 ${
-        expanded ? "w-52" : "w-14"
-      }`}
+      className="relative h-screen w-14 shrink-0"
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
     >
+      <div
+        className={`absolute left-0 top-0 z-50 flex h-full flex-col overflow-hidden border-r border-zinc-100 bg-white py-4 transition-all duration-200 ${
+          expanded ? "w-52" : "w-14"
+        }`}
+      >
       <nav className="flex flex-1 flex-col gap-1 px-2">
         {topNav.map(({ icon: Icon, label, href }) => (
           <Link
@@ -90,6 +93,7 @@ export default function Sidebar() {
             로그아웃
           </span>
         </button>
+      </div>
       </div>
     </aside>
   );
