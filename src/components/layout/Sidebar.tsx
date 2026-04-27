@@ -1,8 +1,9 @@
 "use client";
 
-import { Activity, FileText, Wallet, User, Settings } from "lucide-react";
+import { Activity, FileText, Wallet, User, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const topNav = [
   { icon: Activity, label: "건강", href: "/dashboard/health" },
@@ -17,6 +18,14 @@ const bottomNav = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <aside className="flex h-screen w-14 shrink-0 flex-col items-center border-r border-zinc-100 bg-white py-4">
@@ -48,6 +57,13 @@ export default function Sidebar() {
             <Icon size={20} strokeWidth={1.5} />
           </Link>
         ))}
+        <button
+          onClick={handleLogout}
+          title="로그아웃"
+          className="flex size-10 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-400"
+        >
+          <LogOut size={20} strokeWidth={1.5} />
+        </button>
       </div>
     </aside>
   );
