@@ -1,14 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { Activity, FileText, Wallet, User, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const topNav = [
-  { icon: Activity, label: "건강", href: "/dashboard/health" },
   { icon: FileText, label: "메모", href: "/dashboard/notes" },
   { icon: Wallet, label: "돈", href: "/dashboard/finance" },
+  { icon: Activity, label: "건강", href: "/dashboard/health" },
 ];
 
 const bottomNav = [
@@ -17,6 +18,7 @@ const bottomNav = [
 ];
 
 export default function Sidebar() {
+  const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -28,41 +30,65 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="flex h-screen w-14 shrink-0 flex-col items-center border-r border-zinc-100 bg-white py-4">
-      <nav className="flex flex-1 flex-col items-center gap-1">
+    <aside
+      className={`flex h-screen shrink-0 flex-col border-r border-zinc-100 bg-white py-4 transition-all duration-200 ${
+        expanded ? "w-52" : "w-14"
+      }`}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+    >
+      <nav className="flex flex-1 flex-col gap-1 px-2">
         {topNav.map(({ icon: Icon, label, href }) => (
           <Link
             key={href}
             href={href}
-            title={label}
-            className={`flex size-10 items-center justify-center rounded-lg transition-colors hover:bg-zinc-100 ${
+            className={`flex h-10 items-center gap-3 rounded-lg px-2 transition-colors hover:bg-zinc-100 ${
               pathname.startsWith(href) ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
             }`}
           >
-            <Icon size={20} strokeWidth={1.5} />
+            <Icon size={20} strokeWidth={1.5} className="shrink-0" />
+            <span
+              className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+                expanded ? "w-auto opacity-100" : "w-0 opacity-0"
+              } ${pathname.startsWith(href) ? "font-medium text-zinc-900" : "text-zinc-500"}`}
+            >
+              {label}
+            </span>
           </Link>
         ))}
       </nav>
 
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col gap-1 px-2">
         {bottomNav.map(({ icon: Icon, label, href }) => (
           <Link
             key={href}
             href={href}
-            title={label}
-            className={`flex size-10 items-center justify-center rounded-lg transition-colors hover:bg-zinc-100 ${
+            className={`flex h-10 items-center gap-3 rounded-lg px-2 transition-colors hover:bg-zinc-100 ${
               pathname.startsWith(href) ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
             }`}
           >
-            <Icon size={20} strokeWidth={1.5} />
+            <Icon size={20} strokeWidth={1.5} className="shrink-0" />
+            <span
+              className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+                expanded ? "w-auto opacity-100" : "w-0 opacity-0"
+              } ${pathname.startsWith(href) ? "font-medium text-zinc-900" : "text-zinc-500"}`}
+            >
+              {label}
+            </span>
           </Link>
         ))}
         <button
           onClick={handleLogout}
-          title="로그아웃"
-          className="flex size-10 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-400"
+          className="flex h-10 items-center gap-3 rounded-lg px-2 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-400"
         >
-          <LogOut size={20} strokeWidth={1.5} />
+          <LogOut size={20} strokeWidth={1.5} className="shrink-0" />
+          <span
+            className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+              expanded ? "w-auto opacity-100" : "w-0 opacity-0"
+            } text-zinc-500 hover:text-red-400`}
+          >
+            로그아웃
+          </span>
         </button>
       </div>
     </aside>
