@@ -45,6 +45,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  supabaseResponse.headers.set("x-pathname", pathname);
   return supabaseResponse;
 }
 
