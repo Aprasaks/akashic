@@ -31,7 +31,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex h-screen shrink-0 flex-col border-r border-zinc-100 bg-white py-4 transition-all duration-200 ${
+      className={`relative z-20 flex h-screen shrink-0 flex-col border-r border-zinc-100 bg-white py-4 transition-all duration-200 ${
         expanded ? "w-52" : "w-14"
       }`}
       onMouseEnter={() => setExpanded(true)}
@@ -85,7 +85,7 @@ export default function Sidebar() {
           <span
             className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
               expanded ? "w-auto opacity-100" : "w-0 opacity-0"
-            } text-zinc-500 hover:text-red-400`}
+            } text-zinc-500`}
           >
             로그아웃
           </span>

@@ -1,13 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ContextPanel from "@/components/layout/ContextPanel";
-import type { Category, NoteWithCategory } from "@/types";
+import { useCategories } from "@/hooks/useCategories";
+import { useNotes } from "@/hooks/useNotes";
 
-interface NotesPanelProps {
-  categories: Category[];
-  notes: NoteWithCategory[];
-}
+export default function NotesPanel() {
+  const pathname = usePathname();
+  const { categories } = useCategories();
+  const { notes } = useNotes();
 
-export default function NotesPanel({ categories, notes }: NotesPanelProps) {
   return (
     <ContextPanel title="메모">
       <div className="flex flex-col py-2">
@@ -28,7 +31,11 @@ export default function NotesPanel({ categories, notes }: NotesPanelProps) {
                   <Link
                     key={note.id}
                     href={`/dashboard/notes/${note.id}`}
-                    className="block truncate px-4 py-1.5 text-sm text-zinc-600 hover:bg-zinc-50"
+                    className={`block truncate px-4 py-1.5 text-sm hover:bg-zinc-50 ${
+                      pathname === `/dashboard/notes/${note.id}`
+                        ? "font-medium text-zinc-900"
+                        : "text-zinc-600"
+                    }`}
                   >
                     {note.title ?? "제목 없음"}
                   </Link>
