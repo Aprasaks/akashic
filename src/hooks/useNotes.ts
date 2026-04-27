@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { NoteWithCategory } from "@/types";
 
-export function useNotes() {
+export function useNotes(refetchKey = 0) {
   const [notes, setNotes] = useState<NoteWithCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchNotes() {
       const supabase = createClient();
-
       const { data } = await supabase
         .from("notes")
         .select("*, category:categories(*)")
@@ -22,7 +21,7 @@ export function useNotes() {
     }
 
     fetchNotes();
-  }, []);
+  }, [refetchKey]);
 
   return { notes, loading };
 }
