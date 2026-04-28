@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Category } from "@/types";
 
-export function useCategories(refetchKey = 0) {
+export function useCategories(refetchKey: string | number = 0) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 

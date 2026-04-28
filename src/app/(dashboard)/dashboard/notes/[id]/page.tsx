@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import EditorPanel from "@/components/layout/EditorPanel";
+import NoteEditor from "@/components/notes/NoteEditor";
 
 interface NotePageProps {
   params: Promise<{ id: string }>;
@@ -43,7 +44,9 @@ export default async function NotePage({ params }: NotePageProps) {
           </div>
         </article>
       </div>
-      <EditorPanel />
+      <EditorPanel>
+        <NoteEditor />
+      </EditorPanel>
     </div>
   );
 }

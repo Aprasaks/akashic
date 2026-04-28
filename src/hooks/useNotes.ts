@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { NoteWithCategory } from "@/types";
 
-export function useNotes(refetchKey = 0) {
+export function useNotes(refetchKey: string | number = 0) {
   const [notes, setNotes] = useState<NoteWithCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
