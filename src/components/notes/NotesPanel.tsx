@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ChevronDown, ChevronRight, Folder } from "lucide-react";
+import { ChevronDown, ChevronRight, Folder, Plus } from "lucide-react";
 import ContextPanel from "@/components/layout/ContextPanel";
 import { createClient } from "@/lib/supabase/client";
 import type { Category, NoteWithCategory } from "@/types";
@@ -65,7 +65,17 @@ export default function NotesPanel({ categories, notes, activeNoteId }: NotesPan
 
   return (
     <>
-      <ContextPanel title="메모">
+      <ContextPanel
+        title="메모"
+        action={
+          <Link
+            href="/dashboard/notes"
+            className="flex size-6 items-center justify-center rounded-md text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700"
+          >
+            <Plus size={14} strokeWidth={2} />
+          </Link>
+        }
+      >
         <div className="flex flex-col py-2">
           {categories.map((category) => {
             const isOpen = !closedIds.has(category.id);
