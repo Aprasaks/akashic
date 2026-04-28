@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import WelcomeFade from "./WelcomeFade";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -15,17 +16,16 @@ export default async function WelcomeSection() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("name")
+    .select("name, goal")
     .eq("id", user?.id ?? "")
     .single();
 
   const name = profile?.name ?? user?.email?.split("@")[0] ?? "사용자";
+  const greeting = `${getGreeting()}, ${name}님`;
 
   return (
     <div className="flex h-full flex-col justify-center px-6">
-      <h1 className="text-xl font-semibold text-zinc-900">
-        {getGreeting()}, {name}님
-      </h1>
+      <WelcomeFade greeting={greeting} goal={profile?.goal ?? null} />
     </div>
   );
 }
