@@ -98,8 +98,9 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
   return (
     <form onSubmit={handleSubmit} className="flex h-full flex-col gap-4 p-4">
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-medium text-zinc-400">제목</label>
+        <label htmlFor="note-title" className="text-xs font-medium text-zinc-400">제목</label>
         <input
+          id="note-title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -109,8 +110,9 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-medium text-zinc-400">카테고리</label>
+        <label htmlFor="note-category" className="text-xs font-medium text-zinc-400">카테고리</label>
         <input
+          id="note-category"
           type="text"
           list="category-list"
           value={categoryInput}
@@ -126,8 +128,9 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5">
-        <label className="text-xs font-medium text-zinc-400">내용</label>
+        <label htmlFor="note-content" className="text-xs font-medium text-zinc-400">내용</label>
         <textarea
+          id="note-content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="내용을 입력하세요"
