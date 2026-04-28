@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, FileText, Wallet, User, Settings, LogOut } from "lucide-react";
+import { Activity, FileText, Wallet, User, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const topNav = [
+  { icon: LayoutDashboard, label: "홈", href: "/dashboard", exact: true },
   { icon: FileText, label: "메모", href: "/dashboard/notes" },
   { icon: Wallet, label: "돈", href: "/dashboard/finance" },
   { icon: Activity, label: "건강", href: "/dashboard/health" },
@@ -41,24 +42,27 @@ export default function Sidebar() {
         }`}
       >
       <nav className="flex flex-1 flex-col gap-1 px-2">
-        {topNav.map(({ icon: Icon, label, href }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`flex h-10 items-center gap-3 rounded-lg px-2 transition-colors hover:bg-zinc-100 ${
-              pathname.startsWith(href) ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
-            }`}
-          >
-            <Icon size={20} strokeWidth={1.5} className="shrink-0" />
-            <span
-              className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
-                expanded ? "w-auto opacity-100" : "w-0 opacity-0"
-              } ${pathname.startsWith(href) ? "font-medium text-zinc-900" : "text-zinc-500"}`}
+        {topNav.map(({ icon: Icon, label, href, exact }) => {
+          const isActive = exact ? pathname === href : pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`flex h-10 items-center gap-3 rounded-lg px-2 transition-colors hover:bg-zinc-100 ${
+                isActive ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
+              }`}
             >
-              {label}
-            </span>
-          </Link>
-        ))}
+              <Icon size={20} strokeWidth={1.5} className="shrink-0" />
+              <span
+                className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+                  expanded ? "w-auto opacity-100" : "w-0 opacity-0"
+                } ${isActive ? "font-medium text-zinc-900" : "text-zinc-500"}`}
+              >
+                {label}
+              </span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="flex flex-col gap-1 px-2">
