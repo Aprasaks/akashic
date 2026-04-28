@@ -17,6 +17,7 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
   const [categoryInput, setCategoryInput] = useState(initialNote?.categoryName ?? "");
   const [content, setContent] = useState(initialNote?.content ?? "");
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const isEditMode = !!initialNote;
 
@@ -68,6 +69,8 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
         .eq("id", initialNote.id);
 
       setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
       router.push(`/dashboard/notes/${initialNote.id}`);
       router.refresh();
     } else {
@@ -137,7 +140,7 @@ export default function NoteEditor({ initialNote }: NoteEditorProps) {
         disabled={saving || !content.trim()}
         className="rounded-lg bg-zinc-900 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-40"
       >
-        {saving ? "저장 중..." : isEditMode ? "수정" : "저장"}
+        {saving ? "저장 중..." : saved ? "저장됨 ✓" : isEditMode ? "수정" : "저장"}
       </button>
     </form>
   );

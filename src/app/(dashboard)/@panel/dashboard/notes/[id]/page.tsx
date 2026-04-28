@@ -15,7 +15,7 @@ export default async function NotesPanelWithIdPage({ params }: Props) {
     supabase
       .from("notes")
       .select("*, category:categories(*)")
-      .order("created_at", { ascending: false }),
+      .order("updated_at", { ascending: false }),
   ]);
 
   return (
