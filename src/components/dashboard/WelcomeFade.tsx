@@ -25,7 +25,7 @@ export default function WelcomeFade({ greeting, goal }: WelcomeFadeProps) {
       }, 600);
     };
 
-    const interval = setInterval(cycle, 4000);
+    const interval = setInterval(cycle, 6000);
     return () => clearInterval(interval);
   }, [goal]);
 
@@ -34,7 +34,7 @@ export default function WelcomeFade({ greeting, goal }: WelcomeFadeProps) {
       className="text-xl font-semibold text-zinc-900 transition-opacity duration-500"
       style={{ opacity: visible ? 1 : 0 }}
     >
-      {showGoal && goal ? goal : greeting}
+      {showGoal && goal ? `올해의 목표 : ${goal}` : greeting}
     </h1>
   );
 }
