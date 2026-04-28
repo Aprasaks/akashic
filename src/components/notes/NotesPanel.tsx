@@ -2,16 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronRight, Folder } from "lucide-react";
 import ContextPanel from "@/components/layout/ContextPanel";
-import { useCategories } from "@/hooks/useCategories";
-import { useNotes } from "@/hooks/useNotes";
+import type { Category, NoteWithCategory } from "@/types";
 
-export default function NotesPanel() {
-  const pathname = usePathname();
-  const { categories } = useCategories(pathname);
-  const { notes } = useNotes(pathname);
+interface NotesPanelProps {
+  categories: Category[];
+  notes: NoteWithCategory[];
+  activeNoteId: string | null;
+}
+
+export default function NotesPanel({ categories, notes, activeNoteId }: NotesPanelProps) {
   const [closedIds, setClosedIds] = useState<Set<string>>(new Set());
 
   function toggleCategory(id: string) {
@@ -59,7 +60,7 @@ export default function NotesPanel() {
                         key={note.id}
                         href={`/dashboard/notes/${note.id}`}
                         className={`block truncate px-8 py-1.5 text-sm hover:bg-zinc-50 ${
-                          pathname === `/dashboard/notes/${note.id}`
+                          activeNoteId === note.id
                             ? "font-medium text-zinc-900"
                             : "text-zinc-500"
                         }`}
