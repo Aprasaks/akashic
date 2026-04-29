@@ -22,11 +22,27 @@ Akashic flips that. You talk, Akashic listens — records, organizes, and helps 
 
 ## Features
 
+### v1.1 — Schedule Management `2026.04.29`
+
+> _Your time, visualized._
+
+![screenshot v2](public/screenshot%20v2.png)
+
+- Hourly time grid timeline (0–23h, absolute block positioning)
+- Add schedules with date picker, start/end time, location, memo
+- Click any block to view details, edit, or delete via modal
+- Cross-midnight schedule support — spans to the next day automatically
+- Conflict detection — warns on save + highlights overlapping blocks on timeline
+- Color-coded blocks per schedule (ID-based, consistent across refreshes)
+- Date-grouped context panel — Today / This Week / Next Week / Later
+
+---
+
 ### v1.0 — Notes `2026.04.28`
 
 > _Your thoughts, organized._
 
-![alt text](image.png)
+![screenshot v1](public/screenshot%20v1.png)
 
 - Write and manage memos with a clean 3-column layout
 - Organize notes into categories — create, collapse, delete
@@ -42,10 +58,10 @@ Akashic flips that. You talk, Akashic listens — records, organizes, and helps 
 | Module                            | Status       |
 | --------------------------------- | ------------ |
 | Notes                             | ✅ v1.0      |
+| Schedule Management (일정관리)    | ✅ v1.1      |
 | Finance (가계부)                  | 🔜 Next      |
-| Study Management (공부관리)       | 📋 Planned   |
-| Schedule Management (일정관리)    | 📋 Planned   |
 | Health Management (건강관리)      | 📋 Planned   |
+| Study Management (공부관리)       | 📋 Planned   |
 | AI Voice Input ("Hey Akashic...") | 🎯 Long-term |
 | Mobile App                        | 🎯 Long-term |
 
