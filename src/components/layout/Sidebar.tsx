@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, FileText, Wallet, User, Settings, LogOut, LayoutDashboard } from "lucide-react";
+import { Activity, FileText, Wallet, User, Settings, LogOut, LayoutDashboard, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 const topNav = [
   { icon: LayoutDashboard, label: "홈", href: "/dashboard", exact: true },
   { icon: FileText, label: "메모", href: "/dashboard/notes" },
+  { icon: CalendarDays, label: "일정", href: "/dashboard/schedule" },
   { icon: Wallet, label: "돈", href: "/dashboard/finance" },
   { icon: Activity, label: "건강", href: "/dashboard/health" },
 ];
