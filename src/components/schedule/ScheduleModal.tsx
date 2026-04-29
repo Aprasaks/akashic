@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, Pencil, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getScheduleColor } from "@/lib/scheduleColor";
 import type { Schedule } from "@/types/schedule";
 
 interface ScheduleModalProps {
@@ -39,6 +40,13 @@ export default function ScheduleModal({ schedule, onClose }: ScheduleModalProps)
   const [description, setDescription] = useState(schedule.description ?? "");
 
   const date = schedule.start_at.slice(0, 10);
+  const color = getScheduleColor(schedule.id);
+
+  function nextDay(dateStr: string): string {
+    const parts = dateStr.split("-").map(Number) as [number, number, number];
+    const next = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + 1));
+    return next.toISOString().slice(0, 10);
+  }
 
   async function handleSave() {
     if (!title.trim() || saving) return;
@@ -49,7 +57,7 @@ export default function ScheduleModal({ schedule, onClose }: ScheduleModalProps)
       .update({
         title: title.trim(),
         start_at: `${date}T${startTime}:00`,
-        end_at: endTime ? `${date}T${endTime}:00` : null,
+        end_at: endTime ? `${endTime < startTime ? nextDay(date) : date}T${endTime}:00` : null,
         location: location.trim() || null,
         description: description.trim() || null,
       })
@@ -80,7 +88,7 @@ export default function ScheduleModal({ schedule, onClose }: ScheduleModalProps)
         {/* 헤더 */}
         <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
           <div className="flex items-center gap-2">
-            <div className="size-2.5 rounded-full bg-sky-400" />
+            <div className={`size-2.5 rounded-full ${color.dot}`} />
             <span className="text-xs text-zinc-400">{formatDate(schedule.start_at)}</span>
           </div>
           <div className="flex items-center gap-1">

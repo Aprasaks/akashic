@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Schedule } from "@/types/schedule";
+import { getScheduleColor } from "@/lib/scheduleColor";
 import ScheduleModal from "./ScheduleModal";
 
 interface ScheduleTimelineProps {
   schedules: Schedule[];
+  date: string;
 }
 
 const HOUR_HEIGHT = 64;
@@ -25,23 +27,23 @@ function minutesToPx(minutes: number): number {
   return (minutes / 60) * HOUR_HEIGHT;
 }
 
-export default function ScheduleTimeline({ schedules }: ScheduleTimelineProps) {
+export default function ScheduleTimeline({ schedules, date }: ScheduleTimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Schedule | null>(null);
 
   useEffect(() => {
     if (!scrollRef.current) return;
     if (schedules.length > 0 && schedules[0]) {
-      const firstMinutes = parseMinutes(schedules[0].start_at);
-      const scrollTo = Math.max(0, minutesToPx(firstMinutes) - HOUR_HEIGHT * 2);
+      const startDate = schedules[0].start_at.slice(0, 10);
+      const startMin = startDate < date ? 0 : parseMinutes(schedules[0].start_at);
+      const scrollTo = Math.max(0, minutesToPx(startMin) - HOUR_HEIGHT * 2);
       scrollRef.current.scrollTop = scrollTo;
     } else {
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const scrollTo = Math.max(0, minutesToPx(currentMinutes) - HOUR_HEIGHT * 2);
-      scrollRef.current.scrollTop = scrollTo;
+      scrollRef.current.scrollTop = Math.max(0, minutesToPx(currentMinutes) - HOUR_HEIGHT * 2);
     }
-  }, [schedules]);
+  }, [schedules, date]);
 
   return (
     <>
@@ -63,12 +65,16 @@ export default function ScheduleTimeline({ schedules }: ScheduleTimelineProps) {
 
           {/* 일정 블록 */}
           {schedules.map((schedule) => {
-            const startMin = parseMinutes(schedule.start_at);
-            const endMin = schedule.end_at
-              ? parseMinutes(schedule.end_at)
-              : startMin + 30;
-            const durationMin = Math.max(endMin - startMin, 30);
+            const color = getScheduleColor(schedule.id);
 
+            const startDate = schedule.start_at.slice(0, 10);
+            const startMin = startDate < date ? 0 : parseMinutes(schedule.start_at);
+
+            const endMin = schedule.end_at
+              ? (schedule.end_at.slice(0, 10) > date ? 24 * 60 : parseMinutes(schedule.end_at))
+              : startMin + 30;
+
+            const durationMin = Math.max(endMin - startMin, 30);
             const top = minutesToPx(startMin);
             const height = Math.max(minutesToPx(durationMin), MIN_BLOCK_HEIGHT);
 
@@ -76,15 +82,18 @@ export default function ScheduleTimeline({ schedules }: ScheduleTimelineProps) {
               <button
                 key={schedule.id}
                 onClick={() => setSelected(schedule)}
-                className="absolute left-2 right-2 overflow-hidden rounded-r-lg border-l-2 border-sky-400 bg-sky-50 px-3 py-2 text-left transition-colors hover:bg-sky-100"
+                className={`absolute left-2 right-2 overflow-hidden rounded-r-lg border-l-2 px-3 py-2 text-left transition-colors ${color.border} ${color.bg} ${color.hover}`}
                 style={{ top, height }}
               >
                 <p className="truncate text-xs font-semibold text-zinc-900">
+                  {startDate < date && (
+                    <span className={`mr-1 text-xs ${color.text}`}>↓</span>
+                  )}
                   {schedule.title}
                 </p>
                 <p className="mt-0.5 text-xs text-zinc-500">
-                  {formatTime(schedule.start_at)}
-                  {schedule.end_at && ` ~ ${formatTime(schedule.end_at)}`}
+                  {startDate < date ? "00:00" : formatTime(schedule.start_at)}
+                  {schedule.end_at && ` ~ ${schedule.end_at.slice(0, 10) > date ? "24:00" : formatTime(schedule.end_at)}`}
                 </p>
               </button>
             );

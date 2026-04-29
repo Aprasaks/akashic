@@ -55,8 +55,14 @@ export default function SchedulePanel({ schedules, activeDate }: SchedulePanelPr
   const grouped = useMemo(() => {
     const dateCounts = new Map<string, number>();
     for (const s of schedules) {
-      const date = toLocalDateStr(s.start_at);
-      dateCounts.set(date, (dateCounts.get(date) ?? 0) + 1);
+      const startDate = toLocalDateStr(s.start_at);
+      dateCounts.set(startDate, (dateCounts.get(startDate) ?? 0) + 1);
+      if (s.end_at) {
+        const endDate = toLocalDateStr(s.end_at);
+        if (endDate !== startDate) {
+          dateCounts.set(endDate, (dateCounts.get(endDate) ?? 0) + 1);
+        }
+      }
     }
 
     const groups = new Map<GroupKey, string[]>();

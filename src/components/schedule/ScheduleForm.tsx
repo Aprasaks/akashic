@@ -12,6 +12,12 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+function nextDay(dateStr: string): string {
+  const parts = dateStr.split("-").map(Number) as [number, number, number];
+  const next = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + 1));
+  return next.toISOString().slice(0, 10);
+}
+
 export default function ScheduleForm({ initialDate }: ScheduleFormProps) {
   const router = useRouter();
   const [date, setDate] = useState(initialDate ?? today());
@@ -40,7 +46,7 @@ export default function ScheduleForm({ initialDate }: ScheduleFormProps) {
       description: description.trim() || null,
       location: location.trim() || null,
       start_at: `${date}T${startTime}:00`,
-      end_at: endTime ? `${date}T${endTime}:00` : null,
+      end_at: endTime ? `${endTime < startTime ? nextDay(date) : date}T${endTime}:00` : null,
     });
 
     setTitle("");

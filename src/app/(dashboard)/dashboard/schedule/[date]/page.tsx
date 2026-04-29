@@ -34,8 +34,8 @@ export default async function ScheduleDatePage({ params }: Props) {
   const { data: schedules } = await supabase
     .from("schedules")
     .select("*")
-    .gte("start_at", `${date}T00:00:00`)
     .lt("start_at", `${nextDay(date)}T00:00:00`)
+    .or(`end_at.gte.${date}T00:00:00,and(end_at.is.null,start_at.gte.${date}T00:00:00)`)
     .order("start_at");
 
   const list: Schedule[] = schedules ?? [];
@@ -50,7 +50,7 @@ export default async function ScheduleDatePage({ params }: Props) {
           </h1>
         </div>
         <div className="relative flex flex-1 overflow-hidden px-4 py-4">
-          <ScheduleTimeline schedules={list} />
+          <ScheduleTimeline schedules={list} date={date} />
         </div>
       </div>
 
