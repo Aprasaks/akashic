@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TrendingUp, TrendingDown, Sparkles, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatAmount, formatDate } from "@/lib/financeDefaults";
+import TransactionModal from "@/components/finance/TransactionModal";
 import type { Transaction, FinanceCategory } from "@/types/finance";
 
 interface FinanceMainProps {
@@ -47,7 +48,7 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Transaction | null>(null);
 
   const [fetched, setFetched] = useState(false);
 
@@ -93,14 +94,12 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
     .filter((c) => c.total > 0)
     .sort((a, b) => b.total - a.total);
 
-  async function handleDelete(id: string) {
-    setDeletingId(id);
-    try {
-      await fetch(`/api/finance/transactions/${id}`, { method: "DELETE" });
-      setTransactions((prev) => prev.filter((t) => t.id !== id));
-    } finally {
-      setDeletingId(null);
-    }
+  function handleUpdated(updated: Transaction) {
+    setTransactions((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
+  }
+
+  function handleDeleted(id: string) {
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
   }
 
   async function handleAnalyze() {
@@ -208,9 +207,10 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
                     {formatDate(date)}
                   </p>
                   {(grouped[date] ?? []).map((t) => (
-                    <div
+                    <button
                       key={t.id}
-                      className="group flex items-center justify-between px-6 py-2.5 hover:bg-zinc-50"
+                      onClick={() => setSelected(t)}
+                      className="flex w-full items-center justify-between px-6 py-2.5 text-left hover:bg-zinc-50"
                     >
                       <div className="flex items-center gap-3">
                         <div
@@ -227,23 +227,14 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`text-sm font-semibold ${
-                            t.type === "income" ? "text-emerald-600" : "text-rose-500"
-                          }`}
-                        >
-                          {t.type === "income" ? "+" : "-"}{formatAmount(t.amount)}
-                        </span>
-                        <button
-                          onClick={() => { void handleDelete(t.id); }}
-                          disabled={deletingId === t.id}
-                          className="rounded p-1 text-zinc-300 opacity-0 transition-opacity hover:text-rose-400 group-hover:opacity-100"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    </div>
+                      <span
+                        className={`text-sm font-semibold ${
+                          t.type === "income" ? "text-emerald-600" : "text-rose-500"
+                        }`}
+                      >
+                        {t.type === "income" ? "+" : "-"}{formatAmount(t.amount)}
+                      </span>
+                    </button>
                   ))}
                 </div>
               ))
@@ -330,6 +321,16 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
           </div>
         )}
       </div>
+
+      {selected && (
+        <TransactionModal
+          transaction={selected}
+          categories={categories}
+          onClose={() => setSelected(null)}
+          onUpdated={handleUpdated}
+          onDeleted={handleDeleted}
+        />
+      )}
     </div>
   );
 }
