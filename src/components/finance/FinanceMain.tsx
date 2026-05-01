@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { TrendingUp, TrendingDown, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatAmount, formatDate } from "@/lib/financeDefaults";
 import TransactionModal from "@/components/finance/TransactionModal";
@@ -40,6 +41,7 @@ const PAYMENT_LABEL: Record<string, string> = {
 };
 
 export default function FinanceMain({ categories, refreshKey }: FinanceMainProps) {
+  const router = useRouter();
   const defaultMonth = currentMonth();
 
   const [tab, setTab] = useState<Tab>("내역");
@@ -96,10 +98,12 @@ export default function FinanceMain({ categories, refreshKey }: FinanceMainProps
 
   function handleUpdated(updated: Transaction) {
     setTransactions((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
+    router.refresh();
   }
 
   function handleDeleted(id: string) {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
+    router.refresh();
   }
 
   async function handleAnalyze() {
