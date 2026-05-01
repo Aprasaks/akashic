@@ -1,117 +1,64 @@
 # Akashic
 
-> **당신의 인생을 설계해드립니다.**  
-> _Your life. Designed._
+AI 기반 개인 비서 — 메모, 일정, 가계부를 한 곳에서.
 
-Akashic is your personal AI life assistant — your own Jarvis.  
-Not just a notes app. Not just a planner. A single place where everything about your life gets recorded, organized, and retrieved.
+![screenshot](public/screenshot%20v3.png)
 
-> _"Hey Akashic, memo this. Save that. Find what I was thinking last Tuesday."_
+[English](README.en.md)
 
 ---
 
-## Vision
+## 기능
 
-We live in an era where people carry their phones almost every waking hour, and AI is evolving faster than anyone predicted. Yet most productivity tools still ask you to adapt to them.
+### 메모 `v1.0`
+- 카테고리별 메모 작성 및 관리
+- 마지막 수정 기준 자동 정렬
+- 카테고리 생성 / 삭제 / 접기
+- 패널 실시간 업데이트
 
-Akashic flips that. You talk, Akashic listens — records, organizes, and helps you make sense of it all across every domain of your life.
+### 일정 관리 `v1.1`
+- 시간대별 타임라인 (0–23시, 절대 좌표 배치)
+- 자정 넘는 일정 — 다음 날 자동 반영
+- 일정 충돌 감지 — 저장 시 경고 + 타임라인 강조
+- ID 기반 색상 자동 지정 (새로고침해도 동일)
+- 날짜별 컨텍스트 패널 (오늘 / 이번 주 / 다음 주 / 이후)
 
-**Starting on web. Moving to mobile. Eventually, voice-first.**
-
----
-
-## Features
-
-### v1.2 — Finance (가계부) `2026.05.01`
-
-> _Your money, understood._
-
-![screenshot v3](public/screenshot%20v3.png)
-
-- Natural language input — just say what you spent, AI parses it automatically
-- Confirmation card before saving — review and edit every field AI filled in
-- Manual entry form as fallback — type/amount/merchant/category/payment/date/note
-- Monthly transaction list with income/expense filter and date grouping
-- Click any transaction to edit or delete via modal
-- Category breakdown stats with visual bars per month
-- AI spending analysis — Claude reads your month and gives personalized insights
-- Context panel shows monthly income/expense/balance + recent 5 transactions
-- Default categories auto-seeded on first use (식비, 교통, 여가, 쇼핑, 구독...)
+### 가계부 `v1.2`
+- 자연어 입력 → AI 자동 파싱 (Claude Haiku)
+- 파싱 후 확인 카드 — 저장 전 수정 가능
+- 수동 입력 폼 병행 지원
+- 클릭으로 거래 편집 / 삭제
+- 월별 수입 / 지출 / 잔액 요약
+- 카테고리별 지출 통계
+- AI 소비 패턴 분석
 
 ---
 
-### v1.1 — Schedule Management `2026.04.29`
+## 로드맵
 
-> _Your time, visualized._
-
-![screenshot v2](public/screenshot%20v2.png)
-
-- Hourly time grid timeline (0–23h, absolute block positioning)
-- Add schedules with date picker, start/end time, location, memo
-- Click any block to view details, edit, or delete via modal
-- Cross-midnight schedule support — spans to the next day automatically
-- Conflict detection — warns on save + highlights overlapping blocks on timeline
-- Color-coded blocks per schedule (ID-based, consistent across refreshes)
-- Date-grouped context panel — Today / This Week / Next Week / Later
+| 모듈 | 상태 |
+| ---- | ---- |
+| 메모 | ✅ v1.0 |
+| 일정 관리 | ✅ v1.1 |
+| 가계부 | ✅ v1.2 |
+| 건강 관리 | 📋 예정 |
+| 공부 관리 | 📋 예정 |
+| AI 음성 입력 | 🎯 장기 목표 |
+| 모바일 앱 | 🎯 장기 목표 |
 
 ---
 
-### v1.0 — Notes `2026.04.28`
+## 기술 스택
 
-> _Your thoughts, organized._
-
-![screenshot v1](public/screenshot%20v1.png)
-
-- Write and manage memos with a clean 3-column layout
-- Organize notes into categories — create, collapse, delete
-- Auto-sorts by last modified
-- Real-time panel updates without full page reload
-- Right-click category to delete with confirmation modal
-- New note shortcut from anywhere in the panel
+| 레이어 | 기술 |
+| ------ | ---- |
+| 프레임워크 | Next.js 16 (App Router) |
+| 언어 | TypeScript |
+| 스타일 | Tailwind CSS v4 |
+| DB / 인증 | Supabase (PostgreSQL) |
+| AI | Claude — Anthropic |
+| 배포 | Vercel |
 
 ---
 
-## Roadmap
-
-| Module                            | Status       |
-| --------------------------------- | ------------ |
-| Notes                             | ✅ v1.0      |
-| Schedule Management (일정관리)    | ✅ v1.1      |
-| Finance (가계부)                  | ✅ v1.2      |
-| Health Management (건강관리)      | 📋 Planned   |
-| Study Management (공부관리)       | 📋 Planned   |
-| AI Voice Input ("Hey Akashic...") | 🎯 Long-term |
-| Mobile App                        | 🎯 Long-term |
-
----
-
-## Tech Stack
-
-| Layer           | Technology              |
-| --------------- | ----------------------- |
-| Framework       | Next.js 16 (App Router) |
-| Language        | TypeScript              |
-| Styling         | Tailwind CSS v4         |
-| Database & Auth | Supabase (PostgreSQL)   |
-| Deployment      | Vercel                  |
-
----
-
-## Why "Akashic"?
-
-The Akashic Records — a concept describing a compendium of all universal events, thoughts, words, and intentions across time.  
-Every moment of your life, stored. Every piece of information, retrievable.  
-That's the goal.
-
----
-
-## Status
-
-Early-stage. Actively developed and iterated in public.  
-The vision is long. The build is real.
-
----
-
-## License
-
-MIT
+MIT License
