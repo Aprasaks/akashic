@@ -22,6 +22,24 @@ Akashic flips that. You talk, Akashic listens — records, organizes, and helps 
 
 ## Features
 
+### v1.2 — Finance (가계부) `2026.05.01`
+
+> _Your money, understood._
+
+![screenshot v3](public/screenshot%20v3.png)
+
+- Natural language input — just say what you spent, AI parses it automatically
+- Confirmation card before saving — review and edit every field AI filled in
+- Manual entry form as fallback — type/amount/merchant/category/payment/date/note
+- Monthly transaction list with income/expense filter and date grouping
+- Click any transaction to edit or delete via modal
+- Category breakdown stats with visual bars per month
+- AI spending analysis — Claude reads your month and gives personalized insights
+- Context panel shows monthly income/expense/balance + recent 5 transactions
+- Default categories auto-seeded on first use (식비, 교통, 여가, 쇼핑, 구독...)
+
+---
+
 ### v1.1 — Schedule Management `2026.04.29`
 
 > _Your time, visualized._
@@ -59,7 +77,7 @@ Akashic flips that. You talk, Akashic listens — records, organizes, and helps 
 | --------------------------------- | ------------ |
 | Notes                             | ✅ v1.0      |
 | Schedule Management (일정관리)    | ✅ v1.1      |
-| Finance (가계부)                  | 🔜 Next      |
+| Finance (가계부)                  | ✅ v1.2      |
 | Health Management (건강관리)      | 📋 Planned   |
 | Study Management (공부관리)       | 📋 Planned   |
 | AI Voice Input ("Hey Akashic...") | 🎯 Long-term |
